@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9E8542BE-CB37-4BC1-BC9C-ECF83795772D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Onion.NativeLoader", "src\Onion.NativeLoader\Onion.NativeLoader.csproj", "{B68FDD94-CD88-4FCA-9A7E-81182A603ABD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{52F4AB35-065D-4969-949C-0F566EA3C3C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeLoaderSample", "sample\NativeLoaderSample\NativeLoaderSample.csproj", "{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DDEEF61E-7232-409C-B3C2-3BDF2B2EB02C}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B68FDD94-CD88-4FCA-9A7E-81182A603ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68FDD94-CD88-4FCA-9A7E-81182A603ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68FDD94-CD88-4FCA-9A7E-81182A603ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68FDD94-CD88-4FCA-9A7E-81182A603ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B68FDD94-CD88-4FCA-9A7E-81182A603ABD} = {9E8542BE-CB37-4BC1-BC9C-ECF83795772D}
+		{C0360C3D-6C3C-4CA9-916E-945E3EFEBB81} = {52F4AB35-065D-4969-949C-0F566EA3C3C6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A479383-8127-4273-9370-62D658CB99C6}
+	EndGlobalSection
+EndGlobal
