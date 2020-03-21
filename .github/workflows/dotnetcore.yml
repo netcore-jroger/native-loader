@@ -19,3 +19,5 @@ jobs:
         dotnet-version: 3.1.200
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    - name: Publish to nuget.org
+      run: dotnet nuget push ./native-loader/src/Onion.NativeLoader/bin/Release/*.nupkg --skip-duplicate --no-symbols true --api-key ${{ secrets.nuget_api_key }} --source https://api.nuget.org/v3/index.json

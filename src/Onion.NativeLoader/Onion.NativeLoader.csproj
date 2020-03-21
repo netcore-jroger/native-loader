@@ -7,6 +7,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>jroger</Authors>
     <Copyright>jroger</Copyright>
+    <RepositoryUrl>https://github.com/netcore-jroger/native-loader</RepositoryUrl>
+    <Description>A class library that loads unmanaged dynamic library.</Description>
+    <PackageProjectUrl>https://github.com/netcore-jroger/native-loader</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
