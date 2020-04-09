@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace Onion.NativeLoader.Internal
+namespace Onion.NativeLoader.Internal.Interop
 {
     internal class Win32Interop
     {
