@@ -9,10 +9,11 @@ namespace Onion.NativeLoader
 {
     public class NativeLoader : INativeLoader
     {
+        private const string _methodNameSuffix = "_delegate";
         private static readonly IDictionary<string, Delegate> _delegateCache = new ConcurrentDictionary<string, Delegate>();
         private readonly string _filePath;
-        private bool disposed = false;
-        private HandleRef _moduleHandle;
+        private bool _disposed = false;
+        private readonly HandleRef _moduleHandle;
 
         public NativeLoader(string filePath)
         {
@@ -20,17 +21,24 @@ namespace Onion.NativeLoader
             if (!File.Exists(filePath)) throw new FileNotFoundException($"Native library not found in path: {filePath}.");
 
             this._filePath = filePath;
-            this._moduleHandle = this.Initial();
+            this._moduleHandle = UnmanagedLibraryHelper.LoadLibrary(this, filePath);
         }
 
-        public virtual TDelegate LoadFunction<TDelegate>(string functionName) where TDelegate : Delegate
+        public virtual TDelegate LoadFunction<TDelegate>(string functionName = "") where TDelegate : Delegate
         {
+            if (string.IsNullOrWhiteSpace(functionName))
+            {
+                functionName = typeof(TDelegate).Name;
+            }
+
+            functionName = RemoveFunctionNameSuffix(functionName);
+            
             if (_delegateCache.TryGetValue(functionName, out var @delegate))
             {
                 return @delegate as TDelegate;
             }
 
-            var functionAddress = Win32Interop.GetProcAddress(this._moduleHandle.Handle, functionName);
+            var functionAddress = SymbolHelper.LoadSymbol(this._moduleHandle, functionName);
             if (functionAddress == IntPtr.Zero)
             {
                 throw new MissingMethodException($"Native library method name '{functionName}' not found.");
@@ -51,35 +59,24 @@ namespace Onion.NativeLoader
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this.disposed) return;
+            if (this._disposed) return;
 
             if (disposing)
             {
-                this.Free();
+                // this.Free();
             }
 
-            this.disposed = true;
+            this._disposed = true;
         }
 
-        private HandleRef Initial()
+        private static string RemoveFunctionNameSuffix(string functionName)
         {
-            var handle = Win32Interop.LoadLibrary(this._filePath);
-
-            if (handle == IntPtr.Zero)
+            if (functionName.EndsWith(_methodNameSuffix, StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException($"failed to load {this._filePath}");
+                functionName = functionName.Substring(0, functionName.Length - _methodNameSuffix.Length);
             }
 
-            return new HandleRef(this, handle);
-        }
-
-        private void Free()
-        {
-            if (this._moduleHandle.Handle == IntPtr.Zero) return;
-
-            Win32Interop.FreeLibrary(this._moduleHandle.Handle);
-
-            this._moduleHandle = new HandleRef(null, IntPtr.Zero);
+            return functionName;
         }
     }
 }
