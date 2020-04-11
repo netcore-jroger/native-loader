@@ -23,6 +23,11 @@ namespace Onion.NativeLoader.Internal
                 return CoreCLRInterop.dlsym(handleRef.Handle, symbolName);
             }
 
+            if (OSPlatformHelper.IsLinux)
+            {
+                return LinuxInterop.dlsym(handleRef.Handle, symbolName);
+            }
+
             if (OSPlatformHelper.IsMacOSX)
             {
                 return MacOSXInterop.dlsym(handleRef.Handle, symbolName);

@@ -11,16 +11,14 @@ namespace Onion.NativeLoader
     {
         private const string _methodNameSuffix = "_delegate";
         private static readonly IDictionary<string, Delegate> _delegateCache = new ConcurrentDictionary<string, Delegate>();
-        private readonly string _filePath;
         private bool _disposed = false;
-        private readonly HandleRef _moduleHandle;
+        private HandleRef _moduleHandle;
 
         public NativeLoader(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException($"{nameof(filePath)} can not empty string.");
             if (!File.Exists(filePath)) throw new FileNotFoundException($"Native library not found in path: {filePath}.");
 
-            this._filePath = filePath;
             this._moduleHandle = UnmanagedLibraryHelper.LoadLibrary(this, filePath);
         }
 
@@ -63,7 +61,8 @@ namespace Onion.NativeLoader
 
             if (disposing)
             {
-                // this.Free();
+                UnmanagedLibraryHelper.Free(this._moduleHandle);
+                this._moduleHandle = new HandleRef(null, IntPtr.Zero);
             }
 
             this._disposed = true;

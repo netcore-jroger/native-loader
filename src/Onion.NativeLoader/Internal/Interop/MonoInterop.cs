@@ -13,5 +13,8 @@ namespace Onion.NativeLoader.Internal.Interop
 
         [DllImport("__Internal")]
         internal static extern IntPtr dlsym(IntPtr handle, string symbol);
+        
+        [DllImport("__Internal")]
+        internal static extern int dlclose(IntPtr handle);
     }
 }
