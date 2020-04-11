@@ -26,9 +26,49 @@ namespace Onion.NativeLoader.Internal
                 return LoadPosixLibrarySymbol(wrapper, CoreCLRInterop.dlopen, CoreCLRInterop.dlerror, filePath);
             }
 
+            if (OSPlatformHelper.IsLinux)
+            {
+                return LoadPosixLibrarySymbol(wrapper, LinuxInterop.dlopen, LinuxInterop.dlerror, filePath);
+            }
+
             if (OSPlatformHelper.IsMacOSX)
             {
                 return LoadPosixLibrarySymbol(wrapper, MacOSXInterop.dlopen, MacOSXInterop.dlerror, filePath);
+            }
+            
+            throw new InvalidOperationException("Unsupported OS platform.");
+        }
+
+        public static void Free(HandleRef handleRef)
+        {
+            if (OSPlatformHelper.IsWindows)
+            {
+                Win32Interop.FreeLibrary(handleRef.Handle);
+                return;
+            }
+
+            if (OSPlatformHelper.IsLinux && OSPlatformHelper.IsMono)
+            {
+                FreeLibrary(handleRef, MonoInterop.dlclose);
+                return;
+            }
+            
+            if (OSPlatformHelper.IsLinux && OSPlatformHelper.IsNetCore)
+            {
+                FreeLibrary(handleRef, CoreCLRInterop.dlclose);
+                return;
+            }
+
+            if (OSPlatformHelper.IsLinux)
+            {
+                FreeLibrary(handleRef, LinuxInterop.dlclose);
+                return;
+            }
+
+            if (OSPlatformHelper.IsMacOSX)
+            {
+                FreeLibrary(handleRef, MacOSXInterop.dlclose);
+                return;
             }
             
             throw new InvalidOperationException("Unsupported OS platform.");
@@ -57,6 +97,14 @@ namespace Onion.NativeLoader.Internal
             }
 
             return new HandleRef(wrapper, handle);
+        }
+
+        private static void FreeLibrary(HandleRef handleRef, Func<IntPtr, int> dlclose)
+        {
+            if (handleRef.Handle != IntPtr.Zero)
+            {
+                dlclose(handleRef.Handle);
+            }
         }
     }
 }
